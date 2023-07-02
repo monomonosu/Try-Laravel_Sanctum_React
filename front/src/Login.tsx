@@ -1,9 +1,23 @@
-import React from "react";
+import axios from "axios";
+
+const Axios = axios.create({
+  withCredentials: true,
+});
 
 const LoginPage = () => {
+  const handleClick = async () => {
+    await Axios.get("http://localhost/sanctum/csrf-cookie").then((res) => {
+      Axios.post("http://localhost/api/login", {
+        email: "test@example.com",
+        password: "password",
+      }).then((res) => {
+        console.log(res);
+      });
+    });
+  };
   return (
     <div>
-      <h1>ログインページ</h1>
+      <button onClick={handleClick}>ログイン</button>
     </div>
   );
 };
