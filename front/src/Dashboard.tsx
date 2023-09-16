@@ -41,6 +41,17 @@ const DashboardPage = () => {
     })
   }
 
+  // リクエストヘッダーにトークンが付与されている？のでエラーにならない
+  const getUser = async() => {
+    await Axios.get("http://localhost/api/user")
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
   return (
     <div>
       {loading && <CircularProgress />}
@@ -53,6 +64,7 @@ const DashboardPage = () => {
         </div>
       )}
       <button onClick={logout}>ログアウト</button>
+      <button onClick={getUser}>ユーザー情報取得</button>
     </div>
   );
 };

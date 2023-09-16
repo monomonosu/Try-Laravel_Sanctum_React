@@ -23,6 +23,17 @@ const LoginPage = () => {
       });
     });
   };
+
+  // ダッシュボードとの比較。こちらはリクエストヘッダーにトークンが付与されていないのでエラーになる。
+  const getUser = async() => {
+    await Axios.get("http://localhost/api/user")
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
   
   return (
     <div>
@@ -41,6 +52,8 @@ const LoginPage = () => {
       />
       <br />
       <button onClick={handleClick}>ログイン</button>
+      <br />
+      <button onClick={getUser}>ユーザー情報取得（テスト）</button>
     </div>
   );
 };
