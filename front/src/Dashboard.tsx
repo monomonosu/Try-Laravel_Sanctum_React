@@ -30,6 +30,17 @@ const DashboardPage = () => {
 
     fetchDate();
   },[navigate])
+
+  const logout = async() => {
+    await Axios.post("http://localhost/api/logout")
+    .then(() => {
+      navigate("/login");
+    })
+    .catch(() => {
+      console.log('ログアウトに失敗しました。');
+    })
+  }
+
   return (
     <div>
       {loading && <CircularProgress />}
@@ -41,6 +52,7 @@ const DashboardPage = () => {
           <h1>{user.email}</h1>
         </div>
       )}
+      <button onClick={logout}>ログアウト</button>
     </div>
   );
 };
