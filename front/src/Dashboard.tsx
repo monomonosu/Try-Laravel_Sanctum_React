@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
+import { TransitionLoader } from "./TransitionLoader";
 
 const Axios = axios.create({
   withCredentials: true,
@@ -54,7 +54,7 @@ const DashboardPage = () => {
 
   return (
     <div>
-      {loading && <CircularProgress />}
+      {loading && <TransitionLoader />}
       <h1>ダッシュボード</h1>
       <h2>ユーザー情報</h2>
       {user && (
