@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
+import { TransitionLoader } from "./TransitionLoader";
 
 const Axios = axios.create({
   withCredentials: true,
@@ -41,9 +41,20 @@ const DashboardPage = () => {
     })
   }
 
+  // リクエストヘッダーにトークンが付与されている？のでエラーにならない
+  const getUser = async() => {
+    await Axios.get("http://localhost/api/user")
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
   return (
     <div>
-      {loading && <CircularProgress />}
+      {loading && <TransitionLoader />}
       <h1>ダッシュボード</h1>
       <h2>ユーザー情報</h2>
       {user && (
@@ -53,6 +64,7 @@ const DashboardPage = () => {
         </div>
       )}
       <button onClick={logout}>ログアウト</button>
+      <button onClick={getUser}>ユーザー情報取得</button>
     </div>
   );
 };
