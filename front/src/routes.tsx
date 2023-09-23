@@ -1,14 +1,14 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import DashboardPage from "./Dashboard";
 import LoginPage from "./Login";
 
-export const router = createBrowserRouter([
-  {
-    path: "login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/",
-    element: <DashboardPage />,
-  },
-]);
+const RouterContent = () => {
+  return (
+    <Routes>
+      <Route path="login" element={<LoginPage />} />
+      <Route path="/" element={<DashboardPage />} />
+    </Routes>
+  );
+}
+
+export default RouterContent;

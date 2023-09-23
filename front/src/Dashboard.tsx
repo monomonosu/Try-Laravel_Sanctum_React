@@ -1,38 +1,24 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TransitionLoader } from "./TransitionLoader";
+import { axios } from "./axiosClient";
+import useSWR from "swr";
 
-const Axios = axios.create({
-  withCredentials: true,
-});
-
-type User = {
-  id: number;
-  name: string;
-  email: string;
-}
+// type User = {
+//   id: number;
+//   name: string;
+//   email: string;
+// }
 
 const DashboardPage = () => {
-  const [user,setUser] = useState<User>();
-  const [loading,setLoading] = useState(true);
+  // const [user,setUser] = useState<User>();
+  // const [loading,setLoading] = useState(true);
   const navigate = useNavigate();
-  useEffect(()=>{
-    const fetchDate = async() => await Axios.get("http://localhost/api/user")
-    .then((res) => {
-      console.log(res);
-      setUser(res.data)
-      setLoading(false);
-    })
-    .catch((err) => {
-      navigate("/login");
-    })
 
-    fetchDate();
-  },[navigate])
+  const {data:userData} = useSWR('/user')
 
   const logout = async() => {
-    await Axios.post("http://localhost/api/logout")
+    await axios.post("http://localhost/api/logout")
     .then(() => {
       navigate("/login");
     })
@@ -43,7 +29,7 @@ const DashboardPage = () => {
 
   // リクエストヘッダーにトークンが付与されている？のでエラーにならない
   const getUser = async() => {
-    await Axios.get("http://localhost/api/user")
+    await axios.get("http://localhost/api/user")
     .then((res) => {
       console.log(res);
     })
@@ -54,13 +40,13 @@ const DashboardPage = () => {
 
   return (
     <div>
-      {loading && <TransitionLoader />}
+      {/* {loading && <TransitionLoader />} */}
       <h1>ダッシュボード</h1>
       <h2>ユーザー情報</h2>
-      {user && (
+      {userData && (
         <div>
-          <h1>{user.name}</h1>
-          <h1>{user.email}</h1>
+        <h1>{userData.name}</h1>
+        <h1>{userData.email}</h1>
         </div>
       )}
       <button onClick={logout}>ログアウト</button>
