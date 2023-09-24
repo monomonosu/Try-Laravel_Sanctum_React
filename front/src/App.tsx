@@ -29,6 +29,7 @@ const FetcherComponent = () => {
     },
     errorRetryCount: 0,
     shouldRetryOnError: false,
+    revalidateOnFocus: false,
   };
 
   return (

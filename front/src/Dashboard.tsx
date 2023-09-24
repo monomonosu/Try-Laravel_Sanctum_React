@@ -1,21 +1,18 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TransitionLoader } from "./TransitionLoader";
 import { axios } from "./axiosClient";
 import useSWR from "swr";
 
-// type User = {
-//   id: number;
-//   name: string;
-//   email: string;
-// }
+type User = {
+  id: number;
+  name: string;
+  email: string;
+}
 
 const DashboardPage = () => {
-  // const [user,setUser] = useState<User>();
-  // const [loading,setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const {data:userData} = useSWR('/user')
+  const {data:userData,isLoading:userIsLoading} = useSWR<User>('/user')
 
   const logout = async() => {
     await axios.post("http://localhost/api/logout")
@@ -27,7 +24,7 @@ const DashboardPage = () => {
     })
   }
 
-  // リクエストヘッダーにトークンが付与されている？のでエラーにならない
+  // リクエストヘッダーにトークンが付与されているのでエラーにならない
   const getUser = async() => {
     await axios.get("http://localhost/api/user")
     .then((res) => {
@@ -40,7 +37,7 @@ const DashboardPage = () => {
 
   return (
     <div>
-      {/* {loading && <TransitionLoader />} */}
+      {userIsLoading && <TransitionLoader />}
       <h1>ダッシュボード</h1>
       <h2>ユーザー情報</h2>
       {userData && (
