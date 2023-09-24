@@ -5,8 +5,11 @@ import { SWRConfig } from "swr";
 import { axios } from "./axiosClient";
 import { useNavigate } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
+import { useState } from "react";
 
 const FetcherComponent = () => {
+  // 初回のフェッチをトラッキングするstate
+  const [initialFetch, setInitialFetch] = useState(true);
   const navigate = useNavigate();
 
   const swrConfigValue = {
@@ -15,13 +18,17 @@ const FetcherComponent = () => {
         const response = await axios.get(url, {
           baseURL: "http://localhost/api",
         });
+        if (initialFetch) setInitialFetch(false);
         return response.data;
       } catch (error: any) {
-        if (error.response.status === 401) {
+        // ページ初回読み込み＆401エラーの場合はログインページにリダイレクト
+        if (initialFetch && error.response.status === 401) {
           navigate("/login");
         }
       }
     },
+    errorRetryCount: 0,
+    shouldRetryOnError: false,
   };
 
   return (
