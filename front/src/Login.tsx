@@ -1,10 +1,6 @@
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const Axios = axios.create({
-  withCredentials: true,
-});
+import { axios } from "./axiosClient";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -13,8 +9,8 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
 
   const handleClick = async () => {
-    await Axios.get("http://localhost/sanctum/csrf-cookie").then((res) => {
-      Axios.post("http://localhost/api/login", {
+    await axios.get("http://localhost/sanctum/csrf-cookie").then((res) => {
+      axios.post("http://localhost/api/login", {
         email: email,
         password: password,
       }).then((res) => {
@@ -26,7 +22,7 @@ const LoginPage = () => {
 
   // ダッシュボードとの比較。こちらはリクエストヘッダーにトークンが付与されていないのでエラーになる。
   const getUser = async() => {
-    await Axios.get("http://localhost/api/user")
+    await axios.get("http://localhost/api/user")
     .then((res) => {
       console.log(res);
     })
